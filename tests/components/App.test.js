@@ -1,20 +1,24 @@
-import { Component } from "@odoo/owl";
-import "regenerator-runtime/runtime";
+import { App } from "../../src/components/App";
+import { makeTestFixture, nextTick, click } from "../helpers";
+import { mount } from "@odoo/owl";
 
-export async function nextTick() {
-  return new Promise(function (resolve) {
-    setTimeout(() =>
-      Component.scheduler.requestAnimationFrame(() => resolve())
-    );
+let fixture;
+
+beforeEach(() => {
+  fixture = makeTestFixture();
+});
+
+afterEach(() => {
+  fixture.remove();
+});
+
+describe("App", () => {
+  test("Works as expected...", async () => {
+    await mount(App, { target: fixture });
+    expect(fixture.innerHTML).toBe("<div>Hello Owl</div>");
+
+    click(fixture, "div");
+    await nextTick();
+    expect(fixture.innerHTML).toBe("<div>Hello World</div>");
   });
-}
-
-export function makeTestFixture() {
-  let fixture = document.createElement("div");
-  document.body.appendChild(fixture);
-  return fixture;
-}
-
-export function click(elem, selector) {
-  elem.querySelector(selector).dispatchEvent(new Event("click"));
-}
+});

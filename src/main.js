@@ -1,11 +1,8 @@
-import { Component, tags, useState } from "@odoo/owl";
+import { utils, mount } from "@odoo/owl";
+import { App } from "./components/App";
 
-const { xml } = tags;
-
-export class App extends Component {
-  static template = xml`<div t-on-click="update">Hello <t t-esc="state.text"/></div>`;
-  state = useState({ text: "Owl" });
-  update() {
-    this.state.text = this.state.text === "Owl" ? "World" : "Owl";
-  }
+function setup() {
+  mount(App, { target: document.body });
 }
+
+utils.whenReady(setup);
